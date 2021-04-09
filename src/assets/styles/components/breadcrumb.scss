@@ -1,0 +1,11 @@
+.ant-breadcrumb {
+  span:last-child {
+    a {
+      cursor: default;
+    }
+  }
+}
+
+.ant-tabs-nav::before {
+  border-color: transparent !important;
+}

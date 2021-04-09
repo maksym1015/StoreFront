@@ -1,0 +1,33 @@
+query GetProducts($params: DslProductAdminParams) {
+  getAdminProducts(params: $params) {
+    products {
+      id
+      status {
+        id
+        value
+        displayName
+        description
+      }
+      type
+      name
+      shortDescription
+      longDescription
+      code
+      price {
+        subtotal
+        vat
+        total
+      }
+      mainImage {
+        id
+        productId
+        type
+        fullSizePath
+        thumbnailPath
+        createdOn
+        updatedOn
+      }
+    }
+    totalCount
+  }
+}

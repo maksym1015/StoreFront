@@ -1,0 +1,121 @@
+# This is a sample build configuration for Go.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:14.4.0
+
+definitions:
+  caches:
+    nextcache: .next/cache
+  steps:
+    - step: &dependencies
+        name: Install Dependencies
+        caches:
+          - node
+        script:
+          - npm install --prod=false
+    - step: &prettier
+        name: Formatting
+        caches:
+          - node
+        script:
+          - npm run prettier
+
+    - step: &will-build
+        name: Will Build
+        caches:
+          - node
+          - nextcache
+        script:
+          - echo API_ENDPOINT=${API_ENDPOINT} >> .env
+          - echo WP_ENDPOINT=${WP_ENDPOINT} >> .env
+          - npm run build
+        artifacts:
+          - .next/**
+
+pipelines:
+  default:
+    - step: *dependencies
+    - step: *prettier
+    - step: *will-build
+
+  branches:
+    master:
+      - step: *dependencies
+      - step: *prettier
+      - step: *will-build
+      - step:
+          name: Create Env and Zip Code
+          image: atlassian/default-image:2
+          script:
+            - echo API_ENDPOINT=${API_ENDPOINT} >> .env
+            - echo WP_ENDPOINT=${WP_ENDPOINT} >> .env
+            - echo API_KEY=${API_KEY} >> .env
+            - zip -r dsl-brandowner-portal.zip . -x node_modules/\* src/\*
+          artifacts:
+            - dsl-brandowner-portal.zip
+      - step:
+          name: Deploy to AWS EB
+          deployment: Dev
+          script:
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.6.6
+              variables:
+                AWS_ACCESS_KEY_ID: '$aws_dsl_iam_access_key' # Optional if already defined in the context.
+                AWS_SECRET_ACCESS_KEY: '$aws_dsl_iam_secret' # Optional if already defined in the context.
+                AWS_DEFAULT_REGION: 'eu-west-1' # Optional if already defined in the context.
+                APPLICATION_NAME: 'dsl-brandowner-portal'
+                ENVIRONMENT_NAME: 'dsl-brandowner-portal-dev'
+                ZIP_FILE: 'dsl-brandowner-portal.zip'
+                S3_BUCKET: 'dsl-artifact-bb'
+    staging-*:
+      - step: *dependencies
+      - step: *prettier
+      - step:
+          name: Deploy to AWS EB - Staging
+          caches:
+            - node
+            - nextcache
+          deployment: Staging
+          script:
+            - echo API_ENDPOINT=${API_ENDPOINT} >> .env
+            - echo WP_ENDPOINT=${WP_ENDPOINT} >> .env
+            - echo API_KEY=${API_KEY} >> .env
+            - npm run build
+            - apt-get update && apt-get install -y zip
+            - zip -r dsl-brandowner-portal-staging.zip . -x node_modules/\* src/\*
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.6.6
+              variables:
+                AWS_ACCESS_KEY_ID: '$aws_dsl_iam_access_key' # Optional if already defined in the context.
+                AWS_SECRET_ACCESS_KEY: '$aws_dsl_iam_secret' # Optional if already defined in the context.
+                AWS_DEFAULT_REGION: 'eu-west-1' # Optional if already defined in the context.
+                APPLICATION_NAME: 'dsl-brandowner-portal'
+                ENVIRONMENT_NAME: 'dsl-brandowner-portal-staging'
+                ZIP_FILE: 'dsl-brandowner-portal-staging.zip'
+                S3_BUCKET: 'dsl-artifact-bb'
+    production-*:
+      - step: *dependencies
+      - step: *prettier
+      - step:
+          name: Deploy to AWS EB - Production
+          caches:
+            - node
+            - nextcache
+          deployment: Production
+          trigger: 'manual'
+          script:
+            - echo API_ENDPOINT=${API_ENDPOINT} >> .env
+            - echo WP_ENDPOINT=${WP_ENDPOINT} >> .env
+            - echo API_KEY=${API_KEY} >> .env
+            - npm run build
+            - apt-get update && apt-get install -y zip
+            - zip -r dsl-brandowner-portal-production.zip . -x node_modules/\* src/\*
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.6.6
+              variables:
+                AWS_ACCESS_KEY_ID: '$aws_dsl_iam_access_key' # Optional if already defined in the context.
+                AWS_SECRET_ACCESS_KEY: '$aws_dsl_iam_secret' # Optional if already defined in the context.
+                AWS_DEFAULT_REGION: 'eu-west-1' # Optional if already defined in the context.
+                APPLICATION_NAME: 'dsl-brandowner-portal'
+                ENVIRONMENT_NAME: 'dsl-brandowner-portal-production'
+                ZIP_FILE: 'dsl-brandowner-portal-production.zip'
+                S3_BUCKET: 'dsl-artifact-bb'

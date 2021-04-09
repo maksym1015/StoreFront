@@ -1,0 +1,7 @@
+#import "../fragments/dsl-product.graphql"
+
+query ProductById($id: ID!) {
+  dslProductById(id: $id) {
+    ...DslProductFields
+  }
+}

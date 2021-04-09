@@ -1,0 +1,12 @@
+.simple-search {
+  flex-wrap: nowrap;
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  &-inputs {
+    flex-wrap: wrap;
+    > .ant-space-item {
+      margin-bottom: 10px;
+    }
+  }
+}

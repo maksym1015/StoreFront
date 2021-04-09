@@ -1,0 +1,17 @@
+.saved-searches {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  &-item {
+    display: inline-block;
+    margin-right: 5px;
+    border: 1.5px solid #e6e6e8;
+    border-radius: 16px;
+    padding: 5px 18px;
+    color: #8b8b9a;
+    background-color: #fff;
+    &.active {
+      background-color: #97989f;
+      color: #fff;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+query GetCurrentUser {
+  dslCurrentUser {
+    result
+    user {
+      firstName
+      lastName
+    }
+  }
+}

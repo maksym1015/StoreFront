@@ -1,0 +1,26 @@
+#import "../fragments/address.graphql"
+
+query GetOutletById($id: Int!) {
+  getAdminOutletByID(outletId: $id) {
+    id
+    name
+    style
+    status {
+      value
+      displayName
+      id
+    }
+    legalStatus
+    companyName
+    charityNumber
+    dropPointDescription
+    createdOn
+    addressBook {
+      billingId
+      shippingId
+      addresses {
+        ...AddressFields
+      }
+    }
+  }
+}

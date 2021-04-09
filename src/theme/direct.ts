@@ -1,0 +1,91 @@
+enum Colors {
+  White = '#fff',
+  BrandOrange = '#ff6a38',
+  ContentGrey = '#75797b',
+  ContentNormal = '#75797b',
+  OffBlack = '#272727',
+  DarkButton = '#1f1f1f',
+  DarkButtonFont = '#fff',
+  Error = '#f14668',
+  ErrorFont = '#fff',
+  BorderColor = '#cfcfd3',
+}
+
+const directTheme = {
+  breakpoints: ['480px', '736px', '980px', '1280px', '1690px'],
+  colors: {
+    borderColor: Colors.BorderColor,
+    cartBorderColor: '#e8e8e8',
+    contentGrey: Colors.ContentGrey,
+    content: Colors.ContentNormal,
+    heading: '#4D4949',
+    brandOrange: Colors.BrandOrange,
+    headerFont: Colors.White,
+    menuFont: Colors.OffBlack,
+    menuBackground: Colors.White,
+    footer: '#1f1f1f',
+    footerFont: Colors.White,
+    white: Colors.White,
+    errorFont: Colors.ErrorFont,
+    blurOrange: 'rgba(255, 106, 56, 0.18)',
+    headingGrey: '#615D5D',
+    primary: '#FE5568',
+    lightGrey: '#EFEFEF',
+    midGrey: '#CFCFCF',
+    midDarkGrey: '#797979',
+    textColor: '#131b25',
+    brandTwo: '#1C2638',
+  },
+  variants: {
+    card: {
+      bg: 'white',
+      marginTop: 3,
+    },
+    settingElm: {
+      display: 'inline-block',
+      bg: '#f4f5f6',
+      borderRadius: '2px',
+      py: 1,
+      px: 2,
+      color: '#565767',
+      cursor: 'pointer',
+    },
+    breadcrumbHeader: {
+      borderBottom: '2px solid #EFEFEF',
+      display: 'flex',
+      justifyContent: 'space-between',
+      textTransform: 'uppercase',
+      py: '8px',
+      fontSize: 20,
+      fontWeight: 500,
+      height: 53,
+    },
+  },
+  shadows: {
+    card: '0 0 4px rgba(0, 0, 0, 0.125)',
+  },
+  text: {
+    pageHeading: {
+      fontSize: 20,
+      fontWeight: 500,
+      textTransform: 'uppercase',
+      py: '10px',
+      borderBottom: '2px solid #EFEFEF',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    h4: {
+      textTransform: 'uppercase',
+      fontWeight: 500,
+      fontSize: 20,
+      color: '#131B25',
+    },
+    heading: {
+      fontSize: '16px',
+      fontWeight: 500,
+    },
+  },
+};
+
+export default directTheme;

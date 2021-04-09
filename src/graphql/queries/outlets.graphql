@@ -1,0 +1,17 @@
+query GetOutlets($params: OutletAdminParams) {
+  getAdminOutlets(params: $params) {
+    totalCount
+    outlets {
+      id
+      name
+      status {
+        displayName
+      }
+      style
+      createdOn
+      addressBook {
+        shippingId
+      }
+    }
+  }
+}

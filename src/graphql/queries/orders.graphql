@@ -1,0 +1,35 @@
+query GetOrders {
+  dslOrders {
+    id
+    status {
+      id
+      value
+      displayName
+      description
+    }
+    userId
+    subtotal
+    discount
+    total
+    notes
+    firstname
+    lastname
+    company
+    billingLine1
+    billingLine2
+    billingLine3
+    billingCity
+    billingCounty
+    billingPostcode
+    billingCountry
+    shippingLine1
+    shippingLine2
+    shippingLine3
+    shippingCity
+    shippingCounty
+    shippingPostcode
+    shippingCountry
+    createdOn
+    updatedOn
+  }
+}
